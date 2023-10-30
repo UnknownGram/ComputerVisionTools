@@ -1,0 +1,35 @@
+##Create code to automatically put images into train/test folders
+import shutil
+def PyTorchFormat(folder_path, test_size=0.3):
+
+
+
+  for directory in os.listdir(folder_path):
+    count = 0
+    for dirpath, dirnames, filenames in os.walk(folder_path):
+      length = len(filenames)
+    try:
+      os.mkdir(os.path.join(folder_path, 'Train'))
+      os.mkdir(os.path.join(folder_path, 'Test'))
+    except:
+      pass
+
+    try:
+      os.mkdir(os.path.join(os.path.join(folder_path, 'Train'), directory))
+      os.mkdir(os.path.join(os.path.join(folder_path, 'Test'), directory))
+    except:
+      pass
+    for file in os.listdir(os.path.join(folder_path, directory)):
+      try:
+        if (count < length*test_size):
+          src_path = os.path.join(os.path.join(folder_path, directory), file)
+          dst_path = os.path.join(os.path.join(os.path.join(os.path.join(folder_path, 'Test'), directory)), file)
+          shutil.move(src_path, dst_path)
+          count+=1
+        else:
+          src_path = os.path.join(os.path.join(folder_path, directory), file)
+          dst_path = os.path.join(os.path.join(os.path.join(os.path.join(folder_path, 'Train'), directory)), file)
+          shutil.move(src_path, dst_path)
+      except:
+        pass
+    os.rmdir(os.path.join(data_path, directory))
